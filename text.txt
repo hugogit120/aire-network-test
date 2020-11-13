@@ -1,0 +1,32 @@
+Prueba React
+A modo de evaluar los conocimientos que se tienen con esta tecnología, se precisa
+desarrollar una simple aplicación web dividida en tres vistas, login, main y player.
+Login
+En esta vista, se proporcionará al usuario la posibilidad de introducir su correo y
+contraseña y llamará a un Endpoint que devolverá si es correcto o no. En el caso de ser
+correcto deberá pasar a la vista principal, o, en caso negativo, mostrar el error.
+Main
+En la vista principal, se llamará a un Endpoint para poder obtener los datos de la vista a
+generar. Se recibirá los datos generales del usuario, contenidos marcados como
+favoritos y contenidos disponibles. En la vista debe desarrollarse las siguientes
+funcionalidades:
+• Añadir / Quitar contenidos a favoritos
+• Buscador de contenidos
+• Al pulsar sobre un contenido debe dirigirse a la vista de player
+Player
+Aquí se pretende reproducir el contenido seleccionado, haciendo previamente una
+petición a un Endpoint para obtener la URL de reproducción y algunos datos más sobre
+el contenido.
+
+Sobre la prueba, se valorará:
+• La funcionalidad de la aplicación Web
+• Redux
+• Modularizacion por componentes
+• React funcional
+• Desarrollo mediante GIT y repartición en subtareas
+• Tipado de variables y funciones
+• Buenas praxis de programación
+En cuanto al diseño de las vistas se deja a libre elección por parte del desarrollador.
+Para la entrega de la prueba se dispone de hasta una semana desde la recepción de
+esta. Podéis hacérnosla llegar a través de un enlace al proyecto de GIT o por mail
+mediante un archivo comprimido.
