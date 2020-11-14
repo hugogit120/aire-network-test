@@ -6,7 +6,6 @@ import App from './App';
 import "tachyons"
 
 
-
 ReactDOM.render(
   <Router>
     <App />
