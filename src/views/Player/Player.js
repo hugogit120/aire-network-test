@@ -1,21 +1,37 @@
 import React, { useState, useEffect } from "react";
-import ReactPlayer from 'react-player/file'
+import { useHistory } from "react-router-dom";
+import ReactPlayer from 'react-player/file';
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { handlePlayerView } from "../../lib/api";
+import Loading from "../../components/Loading/Loading";
+
 
 const Player = () => {
-    const { id } = useParams()
-    const [content, setContent] = useState({})
+    const { id } = useParams();
+    const history = useHistory();
+
+    const [content, setContent] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
         handlePlayerView(id)
-            .then(data => setContent(data))
-            .catch(err => console.log(err))
+            .then(data => {
+                setIsLoading(false);
+                setContent(data);
+            })
+            .catch(err => {
+                setIsLoading(false);
+                history.push("/error");
+            })
     }, [])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <div className="bg-black flex justify-center vh-100 pt5">
-            <h1>hola</h1>
             <ReactPlayer
                 url={content.url}
                 width="70%"
@@ -26,4 +42,4 @@ const Player = () => {
     )
 }
 
-export default Player
+export default Player;

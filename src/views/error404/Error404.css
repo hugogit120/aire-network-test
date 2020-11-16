@@ -1,5 +1,4 @@
 .unknowPage {
-  background-color: rgb(143, 210, 229);
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -22,7 +21,7 @@
   border: none;
   font-size: 50px;
   color: whitesmoke;
-  padding: 10px;
+  padding: 20px;
   outline: none;
 }
 

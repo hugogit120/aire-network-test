@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { handleLogin } from "../../lib/api"
 import { useHistory } from "react-router-dom";
 import "./Login.css";
@@ -15,6 +15,12 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const history = useHistory();
 
+    useEffect(() => {
+        if (wrongEmailInput && !user) {
+            setWrongEmailInput("");
+        }
+    }, [user])
+
     const removeModal = () => {
         setErrorMessage("");
     }
@@ -22,8 +28,8 @@ const Login = () => {
     const onSubmitLogin = (event) => {
         event.preventDefault();
 
-        if (!emailRegex.test(user)) {
-            setWrongEmailInput("Ingresa un correo valido");
+        if (user && !emailRegex.test(user)) {
+            return setWrongEmailInput("Ingresa un correo válido");
         }
 
         handleLogin(user, pass)
@@ -38,11 +44,11 @@ const Login = () => {
     }
 
     return (
-        <div className="br4 ba b--black-10 mv4 w-1 w-50-m w-25-l mw6 shadow-5 center">
+        <div className="br4 ba b--black-10 mv4 w-1 w-50-m w-25-l mw6 shadow-5 center bg-white">
             <div className="pa4 relative">
                 <form className="login measure" type="submit" >
                     <div id="sign_up" className="ba b--transparent ph0 mh0">
-                        <h2 className="f1 fw6 ph0 mh0">Inicio de sesion</h2>
+                        <h2 className="f1 fw6 ph0 mh0">Inicio de sesión</h2>
                         <div className="mt3 flex flex-column items-center">
                             <label className="db fw6 lh-copy f6" htmlFor="email">Email</label>
                             <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-70"
@@ -68,7 +74,7 @@ const Login = () => {
                             className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
                             type="submit"
                             onClick={onSubmitLogin}>
-                            Iniciar sesion
+                            Iniciar sesión
                         </button>
                     </div>
                 </form>
