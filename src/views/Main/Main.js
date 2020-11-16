@@ -2,28 +2,31 @@ import React, { useState, useEffect } from "react";
 import MovieCard from "../../components/MovieCard/MovieCard";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import NavBar from "../../components/Navbar/Navbar";
+import Loading from "../../components/Loading/Loading"
 import "./Main.css";
 import { handleGetMovies } from "../../lib/api";
 
-const Main = () => {
-    const [theMovies, setTheMovies] = useState([])
-    const [searchField, setSearchField] = useState("")
-    const [user, setTheUser] = useState({})
-    const [isFavoriteView, setIsFavoriteView] = useState(false)
-    const [toggleUserInfo, setToggleUserInfo] = useState(false)
-    const [requestState, setRequestState] = useState("")
-    const [category, setCategory] = useState("")
+const Main = (props) => {
+    const [theMovies, setTheMovies] = useState([]);
+    const [searchField, setSearchField] = useState("");
+    const [user, setTheUser] = useState({});
+    const [isFavoriteView, setIsFavoriteView] = useState(false);
+    const [toggleUserInfo, setToggleUserInfo] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [category, setCategory] = useState("");
 
     useEffect(() => {
-        setRequestState("loading");
+        setIsLoading(true);
         handleGetMovies()
             .then(data => {
-                setRequestState("");
-                return (
-                    setTheMovies(data.contents),
-                    setTheUser(data.user))
+                setIsLoading(false);
+                setTheMovies(data.contents);
+                setTheUser(data.user);
             })
-            .catch(err => setRequestState("error"))
+            .catch(err => {
+                setIsLoading(false);
+                props.history.push("/error");
+            })
     }, []);
 
     const onSearchChange = (event) => {
@@ -31,7 +34,7 @@ const Main = () => {
     };
 
     const categoryHandler = (event) => {
-        const { value } = event.target
+        const { value } = event.target;
         setCategory(value);
     }
 
@@ -58,22 +61,16 @@ const Main = () => {
         filteredMovies = filteredMovies.filter(movie => movie.section.toLowerCase() === category.toLowerCase());
     }
 
-    if (requestState === "loading") {
+    if (isLoading) {
         return (
-            <h1>loading</h1>
-        );
-    }
-
-    if (requestState === "error") {
-        return (
-            <h1>ups!</h1>
+            <Loading />
         );
     }
 
     const categories = [...new Set(theMovies.map(movie => movie.section))];
 
     return (
-        <div className="">
+        <div>
             <NavBar
                 userInfo={user}
                 toggleUserInfo={toggleUserInfo}
