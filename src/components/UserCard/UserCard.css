@@ -1,0 +1,9 @@
+.userCard {
+    top: 61px;
+    position: absolute;
+    width: 300px;
+    transform: translateX(-51%);
+    overflow: hidden;
+    z-index: 1;
+    padding: 1rem;
+}

@@ -6,6 +6,7 @@ import MovieCard from "../../components/MovieCard/MovieCard"
 import SearchBox from "../../components/SearchBox/SearchBox"
 import NavBar from "../../components/Navbar/Navbar";
 
+
 const Main = () => {
     const device = "web"
     const token = localStorage.getItem("token")
@@ -14,6 +15,7 @@ const Main = () => {
     const [searchField, setSearchField] = useState("")
     const [user, setTheUser] = useState({})
     const [isFavoriteView, setIsFavoriteView] = useState(false)
+    const [toggleUserInfo, setToggleUserInfo] = useState(false)
     const [requestState, setRequestState] = useState("")
 
     useEffect(() => {
@@ -26,7 +28,6 @@ const Main = () => {
                     setTheMovies(data.contents),
                     setTheUser(data.user))
             })
-            .then(console.log(user))
             .catch(err => setRequestState("error"))
     }, []);
 
@@ -68,15 +69,18 @@ const Main = () => {
     return (
         <div className="">
             <NavBar
+                toggleUserInfo={toggleUserInfo}
+                setUserToggle={setToggleUserInfo}
                 favoritesView={isFavoriteView}
                 toggleFavoriteView={setIsFavoriteView} />
             <div className="mt6 vh-100 overflow-y-auto">
                 <SearchBox searchChange={onSearchChange}
                     favoritesView={isFavoriteView} />
-                <div className="movie-container flex flex-wrap">
-                    {filteredMovies.map(movie => {
+                <div className="movie-container flex flex-wrap align-center justify-center">
+                    {filteredMovies.map((movie, i) => {
                         return (
                             <MovieCard
+                                key={i}
                                 addFavorite={addFavoriteHandler}
                                 movie={movie}
                                 isFavorite={user.favs && user.favs.some(id => movie.id === id)}
