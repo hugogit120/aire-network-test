@@ -1,16 +1,11 @@
-import Axios from "axios";
 import React, { useState, useEffect } from "react";
-import qs from "qs";
-import UserCard from "../../components/UserCard/UserCard"
-import MovieCard from "../../components/MovieCard/MovieCard"
-import SearchBox from "../../components/SearchBox/SearchBox"
+import MovieCard from "../../components/MovieCard/MovieCard";
+import SearchBox from "../../components/SearchBox/SearchBox";
 import NavBar from "../../components/Navbar/Navbar";
-
+import "./Main.css";
+import { handleGetMovies } from "../../lib/api";
 
 const Main = () => {
-    const device = "web"
-    const token = localStorage.getItem("token")
-
     const [theMovies, setTheMovies] = useState([])
     const [searchField, setSearchField] = useState("")
     const [user, setTheUser] = useState({})
@@ -21,9 +16,8 @@ const Main = () => {
 
     useEffect(() => {
         setRequestState("loading");
-        Axios.post("https://dev.perseo.tv/ws/GetView.php",
-            qs.stringify({ device, token }))
-            .then(({ data }) => {
+        handleGetMovies()
+            .then(data => {
                 setRequestState("");
                 return (
                     setTheMovies(data.contents),
@@ -38,7 +32,7 @@ const Main = () => {
 
     const categoryHandler = (event) => {
         const { value } = event.target
-        setCategory(value)
+        setCategory(value);
     }
 
     const addFavoriteHandler = (id) => {
@@ -57,36 +51,37 @@ const Main = () => {
     });
 
     if (isFavoriteView && user.favs) {
-        filteredMovies = filteredMovies.filter(movie => user.favs.includes(movie.id))
+        filteredMovies = filteredMovies.filter(movie => user.favs.includes(movie.id));
     }
 
     if (category) {
-        filteredMovies = filteredMovies.filter(movie => movie.section.toLowerCase() === category.toLowerCase())
+        filteredMovies = filteredMovies.filter(movie => movie.section.toLowerCase() === category.toLowerCase());
     }
 
     if (requestState === "loading") {
         return (
             <h1>loading</h1>
-        )
+        );
     }
 
     if (requestState === "error") {
         return (
             <h1>ups!</h1>
-        )
+        );
     }
 
-    const categories = [...new Set(theMovies.map(movie => movie.section))]
+    const categories = [...new Set(theMovies.map(movie => movie.section))];
 
     return (
         <div className="">
             <NavBar
+                userInfo={user}
                 toggleUserInfo={toggleUserInfo}
                 setUserToggle={setToggleUserInfo}
                 favoritesView={isFavoriteView}
                 toggleFavoriteView={setIsFavoriteView}
             />
-            <div className="mt6 vh-100 overflow-y-auto">
+            <div className="mainView  overflow-y-auto">
                 <SearchBox
                     categories={categories}
                     searchChange={onSearchChange}
@@ -108,11 +103,4 @@ const Main = () => {
     )
 }
 
-export default Main
-
-// cover: "https://www.fotoefectos.com/i/775_aparece-portada-pelicula-goodfellas-montaje-online.jpg"
-// duration: 7433
-// id: "fcac80a489a23ce515ad169c1df5ceee"
-// section: "Infantil"
-// title: "Ad Astra"
-// url: "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8"
+export default Main;

@@ -6,7 +6,7 @@ const SearchBox = ({ searchChange, categoryHandler, categories }) => {
             <div className="mr5" >
                 <input
                     className='pa3 ba bg-light-gray gray tc'
-                    placeholder='search movie'
+                    placeholder='Busca tu peli'
                     type='search'
                     onChange={searchChange}
                 />

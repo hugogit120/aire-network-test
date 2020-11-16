@@ -1,20 +1,15 @@
-import Axios from "axios";
-import qs from "qs";
 import React, { useState, useEffect } from "react";
 import ReactPlayer from 'react-player/file'
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { handlePlayerView } from "../../lib/api";
 
 const Player = () => {
     const { id } = useParams()
-    const device = "Web"
-    const token = localStorage.getItem("token")
     const [content, setContent] = useState({})
 
-
     useEffect(() => {
-        Axios.post("https://dev.perseo.tv/ws/Play.php",
-            qs.stringify({ token, device, id }))
-            .then(response => setContent(response.data))
+        handlePlayerView(id)
+            .then(data => setContent(data))
             .catch(err => console.log(err))
     }, [])
 

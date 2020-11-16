@@ -1,0 +1,5 @@
+.mainView {
+    height: calc(100vh - 89px);
+    margin-top: 89px;
+    padding-top: 2rem;
+}
