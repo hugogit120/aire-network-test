@@ -17,6 +17,7 @@ const Main = () => {
     const [isFavoriteView, setIsFavoriteView] = useState(false)
     const [toggleUserInfo, setToggleUserInfo] = useState(false)
     const [requestState, setRequestState] = useState("")
+    const [category, setCategory] = useState("")
 
     useEffect(() => {
         setRequestState("loading");
@@ -34,6 +35,11 @@ const Main = () => {
     const onSearchChange = (event) => {
         setSearchField(event.target.value);
     };
+
+    const categoryHandler = (event) => {
+        const { value } = event.target
+        setCategory(value)
+    }
 
     const addFavoriteHandler = (id) => {
         const { favs } = user;
@@ -54,6 +60,10 @@ const Main = () => {
         filteredMovies = filteredMovies.filter(movie => user.favs.includes(movie.id))
     }
 
+    if (category) {
+        filteredMovies = filteredMovies.filter(movie => movie.section.toLowerCase() === category.toLowerCase())
+    }
+
     if (requestState === "loading") {
         return (
             <h1>loading</h1>
@@ -66,16 +76,21 @@ const Main = () => {
         )
     }
 
+    const categories = [...new Set(theMovies.map(movie => movie.section))]
+
     return (
         <div className="">
             <NavBar
                 toggleUserInfo={toggleUserInfo}
                 setUserToggle={setToggleUserInfo}
                 favoritesView={isFavoriteView}
-                toggleFavoriteView={setIsFavoriteView} />
+                toggleFavoriteView={setIsFavoriteView}
+            />
             <div className="mt6 vh-100 overflow-y-auto">
-                <SearchBox searchChange={onSearchChange}
-                    favoritesView={isFavoriteView} />
+                <SearchBox
+                    categories={categories}
+                    searchChange={onSearchChange}
+                    categoryHandler={categoryHandler} />
                 <div className="movie-container flex flex-wrap align-center justify-center">
                     {filteredMovies.map((movie, i) => {
                         return (
